@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>evil  cabaret</title>
+    <script>
+    window.onload = e => {
+  const from = "creative lab".split("");
+  const to = "evil cabaret".split("");
+  const slices = {};
+
+  const characters = from.map((c, i) => {
+    let r = {
+      character: c,
+      from: i,
+      to:
+        typeof slices[c] !== "undefined"
+          ? to.slice(slices[c] + 1).indexOf(c) + slices[c] + 1
+          : to.indexOf(c)
+    };
+
+    slices[c] = r.to;
+    return r;
+  });
+
+  characters.forEach(c => {
+    const span = document.createElement("div");
+    span.innerHTML = c.character;
+    span.style.left = `${c.from * 25}px`;
+    setTimeout(() => {
+      span.style.transform = `translateX(${(c.to - c.from) * 25}px)`;
+    }, 100);
+    document.getElementById("animate").appendChild(span);
+  });
+
+  setInterval(() => {
+    const a = document.getElementById("animate");
+    a.className === "reset" ? (a.className = "") : (a.className = "reset");
+  }, 5000);
+};
+</script>
+  <style>
+    #animate {
+      position: relative;
+      font-family: Courier;
+      width: 300px;
+      margin: 100px auto;
+      font-size: 20px;
+
+    }
+
+    #animate > div {
+      position: absolute;
+      transform: translateX(0px);
+      transition: all 3s 1s;
+    }
+
+    #animate.reset > div {
+      transform: translateX(0px) !important;
+    }
+  </style>
+
+  </head>
+  <body>
+    <div id="animate">
+    </div>
+  </body>
+</html>
